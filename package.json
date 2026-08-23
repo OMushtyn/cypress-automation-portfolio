@@ -1,0 +1,23 @@
+{
+  "name": "cypress-automation-portfolio",
+  "version": "1.0.0",
+  "description": "E2E test automation framework built with Cypress",
+  "scripts": {
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "cy:run:chrome": "cypress run --browser chrome"
+  },
+  "devDependencies": {
+    "cypress": "^13.6.0",
+    "typescript": "^5.4.0"
+  },
+  "keywords": [
+    "cypress",
+    "test-automation",
+    "e2e-testing",
+    "page-object-model",
+    "qa"
+  ],
+  "author": "Olha Mushtyn",
+  "license": "MIT"
+}
