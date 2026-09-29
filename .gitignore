@@ -5,3 +5,4 @@ cypress/downloads/
 .env
 npm-debug.log*
 .DS_Store
+CLAUDE.local.md
