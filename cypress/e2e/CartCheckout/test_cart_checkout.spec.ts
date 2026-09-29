@@ -53,8 +53,8 @@ describe('Cart and Checkout Flow', () => {
             .addProductToCartByIndex(testData.firstProductIndex)
             .goToCartFromModal();
 
-        cartPage.
-            proceedToCheckout()
-            .verifyRedirectedToLoginForGuestCheckout();
+        cartPage
+            .proceedToCheckout()
+            .verifyLoginPromptShownForGuestCheckout();
     });
 });

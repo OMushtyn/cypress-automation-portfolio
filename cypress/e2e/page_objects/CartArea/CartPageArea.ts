@@ -17,11 +17,13 @@ export class CartArea {
 
     /**
      * Verifies the displayed quantity of a product in the cart.
+     * Uses an exact text match (the quantity button has no surrounding
+     * whitespace), so "1" does not pass for "10" or "11".
      * @param expectedQuantity - Expected quantity.
      */
     verifyItemQuantity(expectedQuantity: number): this {
         cy.get(mapping_cart.buttons.quantity_button)
-            .should('contain.text', String(expectedQuantity));
+            .should('have.text', String(expectedQuantity));
 
         return this;
     }
@@ -47,12 +49,16 @@ export class CartArea {
     }
 
     /**
-     * Verifies that guest checkout redirects to the registration/login page
-     * (this demo site requires an account before completing checkout).
+     * Verifies that a guest who clicks "Proceed To Checkout" is asked to log in.
+     * This demo site does not redirect guests: it stays on /view_cart and shows
+     * the "Checkout" modal with a "Register / Login" link to /login.
      */
-    verifyRedirectedToLoginForGuestCheckout(): this {
-        cy.url()
-            .should('include', '/view_cart');
+    verifyLoginPromptShownForGuestCheckout(): this {
+        cy.get(mapping_cart.elements.checkout_modal)
+            .should('be.visible');
+        cy.get(mapping_cart.elements.checkout_modal_login_link)
+            .should('be.visible')
+            .and('have.attr', 'href', '/login');
 
         return this;
     }

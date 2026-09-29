@@ -6,5 +6,8 @@ export const mapping_cart = {
     },
     elements: {
         cart_row: '#cart_info_table tbody tr',
+        checkout_modal: '#checkoutModal',
+        checkout_modal_login_link: '#checkoutModal a[href="/login"]',
     },
-};
+} as const;
+
