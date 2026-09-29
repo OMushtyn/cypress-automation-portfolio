@@ -101,23 +101,63 @@ export class ProductsArea {
     }
 
     /**
-     * Selects the first category in the sidebar.
+     * Saves the trimmed name of the product at the given index as a static alias,
+     * so it can be compared later on another page (e.g. the cart).
+     * Uses .eq(index) because the product is chosen by its position in the list
+     * (same as addProductToCartByIndex). The alias is static because Cypress 12+
+     * re-runs query aliases on access, and the product list is not on /view_cart.
+     * @param index - Index of the product in the list (0-based).
+     * @param alias - Alias name without "@".
      */
-    selectFirstCategory(): this {
-        cy.get(mapping_products.elements.category_panel_link)
-            .first()
+    rememberProductNameByIndex(index: number, alias: string): this {
+        cy.get(mapping_products.elements.product_info_text)
+            .eq(index)
+            .invoke('text')
+            .then((name) => name.trim())
+            .as(alias, { type: 'static' });
+
+        return this;
+    }
+
+    /**
+     * Expands the "Women" sidebar panel and opens its "Dress" subcategory.
+     * The panel title is only an accordion toggle, so the subcategory link
+     * inside the expanded panel must be clicked to actually filter.
+     */
+    selectWomenDressCategory(): this {
+        cy.get(mapping_products.elements.category_toggle_women)
+            .click();
+        cy.get(mapping_products.elements.category_link_women_dress)
             .click();
 
         return this;
     }
 
     /**
-     * Verifies that product titles are rendered (used after navigating into
-     * a category to confirm the product list loaded).
+     * Verifies that the category page is open: exact URL path and exact heading.
+     * @param expectedPath - Expected URL pathname (e.g. "/category_products/1").
+     * @param expectedHeading - Expected heading text (e.g. "Women - Dress Products").
      */
-    verifyProductTitlesVisible(): this {
+    verifyCategoryPageShown(expectedPath: string, expectedHeading: string): this {
+        cy.location('pathname')
+            .should('eq', expectedPath);
         cy.get(mapping_products.elements.product_title)
-            .should('be.visible');
+            .should('have.text', expectedHeading);
+
+        return this;
+    }
+
+    /**
+     * Verifies that at least one product is listed and every product name
+     * matches the pattern (proves the list is filtered, not the full catalogue).
+     * @param pattern - Pattern every product name must match.
+     */
+    verifyAllProductNamesMatch(pattern: RegExp): this {
+        cy.get(mapping_products.elements.product_info_text)
+            .should('have.length.greaterThan', 0)
+            .each(($name) => {
+                expect($name.text().trim()).to.match(pattern);
+            });
 
         return this;
     }

@@ -23,13 +23,19 @@ describe('Cart and Checkout Flow', () => {
         const testData = data.dataProvider;
 
         productsPage
+            .rememberProductNameByIndex(testData.firstProductIndex, testData.firstProductNameAlias)
             .addProductToCartByIndex(testData.firstProductIndex)
             .continueShoppingFromModal()
+            .rememberProductNameByIndex(testData.secondProductIndex, testData.secondProductNameAlias)
             .addProductToCartByIndex(testData.secondProductIndex)
             .goToCartFromModal();
 
         cartPage
-            .verifyCartRowCount(testData.expectedTwoItemsCount);
+            .verifyCartRowCount(testData.expectedTwoItemsCount)
+            .verifyCartProductNamesMatchAliases([
+                testData.firstProductNameAlias,
+                testData.secondProductNameAlias,
+            ]);
     });
 
     it('should allow removing a product from the cart', () => {

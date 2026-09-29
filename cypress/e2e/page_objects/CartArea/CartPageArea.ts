@@ -16,6 +16,31 @@ export class CartArea {
     }
 
     /**
+     * Verifies that the cart contains exactly the products whose names were
+     * saved earlier as aliases: same names, no extra or missing rows, all distinct.
+     * The comparison ignores order.
+     * @param aliases - Alias names without "@", saved by rememberProductNameByIndex.
+     */
+    verifyCartProductNamesMatchAliases(aliases: readonly string[]): this {
+        const expectedNames: string[] = [];
+
+        aliases.forEach((alias) => {
+            cy.get<string>(`@${alias}`).then((name) => {
+                expectedNames.push(name);
+            });
+        });
+        cy.get(mapping_cart.elements.cart_product_name)
+            .should(($names) => {
+                const actualNames = $names.toArray().map((el) => Cypress.$(el).text().trim());
+
+                expect(new Set(expectedNames).size, 'distinct remembered names').to.eq(aliases.length);
+                expect(actualNames.sort()).to.deep.equal([...expectedNames].sort());
+            });
+
+        return this;
+    }
+
+    /**
      * Verifies the displayed quantity of a product in the cart.
      * Uses an exact text match (the quantity button has no surrounding
      * whitespace), so "1" does not pass for "10" or "11".

@@ -33,7 +33,7 @@ Statuses: Covered / Partial / Missing. User state: G = guest, U = logged-in user
 | ID | Title | Technique | Type | Priority | Automate | Status |
 |---|---|---|---|---|---|---|
 | [TC-CART-001](#tc-cart-001) | Guest adds one product, the cart has one row with quantity 1 | State transition | Positive | High | Yes | Covered |
-| [TC-CART-002](#tc-cart-002) | Guest adds two different products, both are in the cart | State transition | Positive | High | Yes | Partial |
+| [TC-CART-002](#tc-cart-002) | Guest adds two different products, both are in the cart | State transition | Positive | High | Yes | Covered |
 | [TC-CART-003](#tc-cart-003) | Guest removes the only product, the cart is empty | State transition | Positive | High | Yes | Covered |
 | [TC-CART-004](#tc-cart-004) | Guest clicks Proceed To Checkout and sees the login prompt | State transition | Negative | High | Yes | Covered |
 | [TC-CART-005](#tc-cart-005) | Empty cart shows "Cart is empty!" with a link to products | State transition | Positive | Medium | Yes | Missing |
@@ -79,7 +79,7 @@ Statuses: Covered / Partial / Missing. User state: G = guest, U = logged-in user
   2. Add the second product, click "View Cart"
 - **Test data:** product indexes 0 and 1
 - **Expected result:** the cart has 2 rows and the product names match the two added products
-- **Covered by:** CartCheckout/test_cart_checkout.spec.ts — "should add multiple different products and show them all in the cart" (partial: only the row count is checked; missing a check that the names are products 0 and 1)
+- **Covered by:** CartCheckout/test_cart_checkout.spec.ts — "should add multiple different products and show them all in the cart"
 
 #### TC-CART-003
 
@@ -333,8 +333,8 @@ Statuses: Covered / Partial / Missing. User state: G = guest, U = logged-in user
 
 | Status | Count | Cases |
 |---|---|---|
-| Covered | 3 | 001, 003, 004 |
-| Partial | 3 | 002, 017, 018 |
+| Covered | 4 | 001, 002, 003, 004 |
+| Partial | 2 | 017, 018 |
 | Missing | 16 | 005–016, 019–022 |
 | Total | 22 | |
 
@@ -345,5 +345,5 @@ Automation split: Automate = Yes 13 cases (001–008, 014–018), Automate = No 
 | Priority | Cases | What is missing |
 |---|---|---|
 | High | 006, 014, 019, 020, 021 | quantity on repeated add, row total calculation, the whole checkout of a logged-in user (address, payment, confirmation, payment validation; these need an exploratory check first) |
-| Medium | 002, 005, 007, 008, 009, 010, 012, 013, 015, 016, 017, 022 | product name check, the empty cart, valid quantities from the product page, invalid quantity handling (exploratory), partial removal, cart persistence, the /login navigation, the cart after login |
+| Medium | 005, 007, 008, 009, 010, 012, 013, 015, 016, 017, 022 | the empty cart, valid quantities from the product page, invalid quantity handling (exploratory), partial removal, cart persistence, the /login navigation, the cart after login |
 | Low | 011, 018 | huge quantity handling (exploratory), modal closing check |
