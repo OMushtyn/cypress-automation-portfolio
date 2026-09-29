@@ -3,7 +3,7 @@ import { mapping_cart } from './mapping_cart';
 /**
  * Page Object for the cart page (/view_cart).
  */
-export class CartPage {
+export class CartArea {
     /**
      * Verifies the number of rows (products) in the cart table.
      * @param expectedRows - Expected number of rows.
@@ -58,4 +58,4 @@ export class CartPage {
     }
 }
 
-export const cartPage = new CartPage();
+export const cartPage = new CartArea();

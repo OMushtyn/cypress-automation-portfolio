@@ -17,7 +17,7 @@ Since production code and business logic from my current QA role are covered by 
 - **Page Object Model (POM)** — selectors and page actions encapsulated in dedicated classes, separate from test specs
 - **JavaScript (Mocha/Chai syntax)** — test assertion syntax (via Cypress, compiled from TypeScript)
 - **GitHub Actions** — CI pipeline, tests run automatically on every push
-- **Colocated test data (`*.data.ts`)** — each spec's input values and expected results live in a `dataProvider` object next to the spec, kept separate from test logic
+- **Colocated test data (`data.ts`)** — each spec's input values and expected results live in a `dataProvider` object next to the spec, kept separate from test logic
 
 ## Project Structure
 
@@ -52,11 +52,11 @@ cypress-automation-portfolio/
 └── package.json
 ```
 
-Each feature gets its own folder under `e2e/`, with the spec and its `data.ts` colocated. Page Objects live in a sibling `page_objects/` folder inside `e2e/`, grouped the same way — one folder per feature area, each holding its `*Area.ts` class and sibling `mapping_*.ts` selectors file.
+Each feature gets its own folder under `e2e/`, with the spec and its `data.ts` colocated. Page Objects live in a sibling `page_objects/` folder inside `e2e/`, grouped the same way — one folder per feature area, each holding its `*PageArea.ts` file (exporting a `*Area` class, e.g. `CartArea`, and a ready-to-use instance) and a sibling `mapping_*.ts` selectors file.
 
 ### Why Page Object Model
 
-Each `*Area.ts` class owns the actions and assertions for its page, while its sibling `mapping_*.ts` file holds only the selectors. Specs call chainable methods (e.g. `productsPage.searchProduct(term).verifyProductsDisplayed()`) and read like a sequence of business actions rather than raw DOM queries. If the site's markup changes, only the mapping file needs an update — no hunting through test files.
+Each `*Area` class owns the actions and assertions for its page, while its sibling `mapping_*.ts` file holds only the selectors. Specs call chainable methods (e.g. `productsPage.searchProduct(term).verifyProductsDisplayed()`) and read like a sequence of business actions rather than raw DOM queries. If the site's markup changes, only the mapping file needs an update — no hunting through test files.
 
 ## Site under test
 

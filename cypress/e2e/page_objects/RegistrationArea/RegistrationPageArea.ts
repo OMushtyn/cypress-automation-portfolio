@@ -3,7 +3,7 @@ import { mapping_registration } from './mapping_registration';
 /**
  * Page Object for the "Login / Signup" page (/login).
  */
-export class RegistrationPageArea {
+export class RegistrationArea {
     /**
      * Opens the login/signup page.
      */
@@ -110,4 +110,4 @@ export class RegistrationPageArea {
     }
 }
 
-export const registrationPage = new RegistrationPageArea();
+export const registrationPage = new RegistrationArea();
