@@ -1,0 +1,40 @@
+{
+  "env": {
+    "BASH_DEFAULT_TIMEOUT_MS": "600000",
+    "BASH_MAX_TIMEOUT_MS": "1200000"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(npm run cy:run)",
+      "Bash(npm run cy:run:chrome)",
+      "Bash(npx cypress run *)",
+      "Bash(npx tsc --noEmit)",
+      "Bash(git status)",
+      "Bash(git diff)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Write(./docs/bug-reports.md)",
+      "Edit(./docs/bug-reports.md)",
+      "Write(./docs/test-plan.md)",
+      "Edit(./docs/test-plan.md)",
+      "WebFetch(domain:automationexercise.com)"
+    ],
+    "ask": [
+      "Edit(./cypress.config.ts)",
+      "Edit(./tsconfig.json)",
+      "Edit(./package.json)",
+      "Edit(./cypress/support/**)",
+      "Bash(npm install *)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Bash(cat .env*)",
+      "Bash(printenv *)",
+      "Edit(./.github/workflows/**)",
+      "Bash(rm -rf *)",
+      "Bash(git push)",
+      "Bash(git push *)"
+    ]
+  }
+}

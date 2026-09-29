@@ -3,7 +3,7 @@ import { mapping_products } from './mapping_products';
 /**
  * Page Object for the "All Products" page (/products).
  */
-export class ProductsPage {
+export class ProductsArea {
     /**
      * Opens the products listing page.
      */
@@ -123,4 +123,4 @@ export class ProductsPage {
     }
 }
 
-export const productsPage = new ProductsPage();
+export const productsPage = new ProductsArea();
