@@ -49,7 +49,7 @@ The code is stable and green in CI — changes must keep the existing style and 
 ## Known specifics (do NOT change without asking)
 - Registration tests assert exact native browser validation messages in Ukrainian. Chrome's UI language is pinned via `--lang=uk-UA` in `cypress.config.ts` (`before:browser:launch`), and CI installs `language-pack-uk` and sets locale env vars. Do not remove or change either.
 - `cypress/support/e2e.ts` suppresses `uncaught:exception` globally because the demo site throws third-party script errors. Keep it.
-- `retries.runMode` is 1, which can hide flaky tests. When investigating flakiness, run with `--config retries=0`.
+- `retries.runMode` is 1, which can hide flaky tests. To run without retries, add `--config '{"e2e":{"retries":0}}'`. `--config retries=0` does not work here, because retries are set inside the `e2e` block of `cypress.config.ts`.
 - Always run tests in Chrome (`--browser chrome` or `npm run cy:run:chrome`) — the Ukrainian locale pin works only there, same as in CI.
 
 ## Commands

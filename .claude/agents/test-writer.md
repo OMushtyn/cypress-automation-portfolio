@@ -41,7 +41,7 @@ Create or change files in this order — each step depends on the previous one:
 
 ## Checking your work
 1. Run the changed spec in Chrome without retries:
-   `npx cypress run --browser chrome --spec "<file>" --config retries=0`
+   `npx cypress run --browser chrome --spec "<file>" --config '{"e2e":{"retries":0}}'`
 2. Run `npx tsc --noEmit`.
 3. If the spec fails, find the cause and fix it. At most 3 attempts; then stop and hand off with `FAILED`.
 

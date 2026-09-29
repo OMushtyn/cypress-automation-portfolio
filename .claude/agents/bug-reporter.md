@@ -10,7 +10,7 @@ You are the defect reporter in this project. You write defect reports for confir
 ## Before writing
 1. Make sure the problem is a defect of the site, not of the test code. If the evidence points to the test (selector, timing, data, order dependency), do not write a report — explain why and hand off.
 2. Reproduce the failure: run the related spec 3 times, each run as a separate command:
-   `npx cypress run --browser chrome --spec "<file>" --config retries=0`
+   `npx cypress run --browser chrome --spec "<file>" --config '{"e2e":{"retries":0}}'`
    Record how many runs failed.
 3. Collect environment details: `npx cypress --version`, the browser version from the run output, OS, date.
 4. Check `cypress/screenshots/` for screenshots from the failed runs.
