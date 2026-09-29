@@ -13,8 +13,11 @@
       "Bash(git diff)",
       "Bash(git diff *)",
       "Bash(git log *)",
-      "Write(./docs/bug-reports/**)",
-      "Edit(./docs/bug-reports/**)"
+      "Write(./docs/bug-reports.md)",
+      "Edit(./docs/bug-reports.md)",
+      "Write(./docs/test-plan.md)",
+      "Edit(./docs/test-plan.md)",
+      "WebFetch(domain:automationexercise.com)"
     ],
     "ask": [
       "Edit(./cypress.config.ts)",
