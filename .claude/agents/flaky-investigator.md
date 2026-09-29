@@ -11,9 +11,9 @@ You are the flaky test investigator in this project. You investigate failing and
 ## How to investigate
 1. Read `CLAUDE.md`, the spec, its `data.ts` and the page objects and mapping files it uses.
 2. Run the test 5 times, each run as a separate command:
-   `npx cypress run --browser chrome --spec "<file>" --config retries=0`
+   `npx cypress run --browser chrome --spec "<file>" --config '{"e2e":{"retries":0}}'`
    - Always use Chrome: the Ukrainian locale pin works only there, as in CI.
-   - Always use `--config retries=0`: the project config retries once, which hides flakiness. Never change the retries value in `cypress.config.ts`.
+   - Always use `--config '{"e2e":{"retries":0}}'`: the project config retries once, which hides flakiness. Never change the retries value in `cypress.config.ts`.
 3. For each run record: passed or failed, the failing test title, the error message and the failing command.
 4. Check `cypress/screenshots/` for screenshots of the failed runs.
 5. Compare runs: same error every time points to a stable cause; different errors or random failures point to timing, order or environment.

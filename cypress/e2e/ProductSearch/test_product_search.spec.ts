@@ -24,8 +24,11 @@ describe('Product Search', () => {
     });
 
     it('should filter products by category from the sidebar', () => {
+        const testData = data.dataProvider.categoryFilter;
+
         productsPage
-            .selectFirstCategory()
-            .verifyProductTitlesVisible();
+            .selectWomenDressCategory()
+            .verifyCategoryPageShown(testData.path, testData.heading)
+            .verifyAllProductNamesMatch(testData.productNamePattern);
     });
 });
