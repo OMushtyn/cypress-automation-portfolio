@@ -12,7 +12,9 @@
       "Bash(git status)",
       "Bash(git diff)",
       "Bash(git diff *)",
-      "Bash(git log *)"
+      "Bash(git log *)",
+      "Write(./docs/bug-reports/**)",
+      "Edit(./docs/bug-reports/**)"
     ],
     "ask": [
       "Edit(./cypress.config.ts)",
