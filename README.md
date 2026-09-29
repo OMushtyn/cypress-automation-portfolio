@@ -1,6 +1,6 @@
 # Cypress Automation Portfolio
 
-![Cypress](https://img.shields.io/badge/Cypress-13.6-17202C?logo=cypress&logoColor=white)
+![Cypress](https://img.shields.io/badge/Cypress-13.17-17202C?logo=cypress&logoColor=white)
 ![Node](https://img.shields.io/badge/Node.js-18%2B-339933?logo=node.js&logoColor=white)
 ![CI](https://github.com/OMushtyn/cypress-automation-portfolio/actions/workflows/cypress.yml/badge.svg)
 
