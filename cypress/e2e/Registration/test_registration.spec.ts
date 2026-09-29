@@ -27,7 +27,7 @@ describe('User Registration', () => {
             .verifySignupEmailValidationMessage(data.dataProvider.expectedValidationMessages.invalidEmailFormat);
     });
 
-    it('should require both name and email fields before allowing signup', () => {
+    it('should block signup with empty fields and show the required-field hint on the name field', () => {
         registrationPage
             .clickSignupButton()
             .verifySignupNameInvalid()
