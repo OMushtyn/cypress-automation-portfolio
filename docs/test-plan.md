@@ -173,7 +173,7 @@ Statuses: Covered / Partial / Missing. User state: G = guest, U = logged-in user
   1. Clear the Quantity field and enter the value
   2. Click "Add to cart"
 - **Test data:** quantity `-1`
-- **Expected result:** unknown. Assumption: a negative quantity is never added to the cart as such. The exact behaviour must be established first.
+- **Expected result:** a negative quantity is rejected (the field has `min="1"`): the product is not added and a validation message is shown. Actual behaviour differs — see [BUG-001](bug-reports.md#bug-001)
 - **Covered by:** —
 
 #### TC-CART-011
