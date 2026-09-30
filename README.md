@@ -167,7 +167,7 @@ The agents have been run on the existing suite:
 - `test-writer` fixed them; each fix was verified by deliberately breaking the behaviour and confirming that the test fails
 - `test-planner` produced the approved CartCheckout test plan in [`docs/test-plan.md`](docs/test-plan.md): 22 test cases with test design techniques and coverage status
 
-`docs/bug-reports.md` is created by `bug-reporter` when the first site defect is confirmed.
+The first site defect, BUG-001 (the cart accepts a negative quantity), was found by manual exploratory testing and is documented in [`docs/bug-reports.md`](docs/bug-reports.md) in the format used by `bug-reporter`.
 
 ## Author
 
