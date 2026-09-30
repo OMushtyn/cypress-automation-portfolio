@@ -24,6 +24,7 @@ The code is stable and green in CI — changes must keep the existing style and 
 ### Selectors (mapping files)
 - `export const mapping_<name> = { inputs: {...}, buttons: {...}, elements: {...} } as const;`
 - Keys in snake_case (`search_input`, `add_to_cart_button`)
+- Links (`<a>`) go into `elements`, buttons (`<button>`, clickable controls) into `buttons`
 
 ### Test data
 - `export const data = { dataProvider: { ... } };` in the feature's `data.ts`

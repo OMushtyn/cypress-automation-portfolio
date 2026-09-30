@@ -15,7 +15,7 @@ describe('Product Search', () => {
             .verifyProductsDisplayed();
     });
 
-    it('should show an empty state gracefully for a nonsense search term', () => {
+    it('should show no products for a nonsense search term', () => {
         const testData = data.dataProvider;
 
         productsPage

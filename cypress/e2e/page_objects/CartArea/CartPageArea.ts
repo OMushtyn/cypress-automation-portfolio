@@ -54,10 +54,13 @@ export class CartArea {
     }
 
     /**
-     * Removes a product from the cart (clicks the delete icon on the first row).
+     * Removes the product in the first cart row.
+     * Uses .first() because every cart row has its own delete icon, so only
+     * the first one is clicked.
      */
     deleteFirstItem(): this {
         cy.get(mapping_cart.buttons.delete_button)
+            .first()
             .click();
 
         return this;

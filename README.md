@@ -1,6 +1,6 @@
 # Cypress Automation Portfolio
 
-![Cypress](https://img.shields.io/badge/Cypress-13.6-17202C?logo=cypress&logoColor=white)
+![Cypress](https://img.shields.io/badge/Cypress-13.17-17202C?logo=cypress&logoColor=white)
 ![Node](https://img.shields.io/badge/Node.js-18%2B-339933?logo=node.js&logoColor=white)
 ![CI](https://github.com/OMushtyn/cypress-automation-portfolio/actions/workflows/cypress.yml/badge.svg)
 
@@ -161,7 +161,13 @@ Agents can also be called directly, e.g. `@agent-test-reviewer review cypress/e2
 
 ### Status
 
-The setup is configured and committed. `docs/test-plan.md` and `docs/bug-reports.md` are created by the agents on their first run.
+The agents have been run on the existing suite:
+
+- `test-reviewer` reviewed all specs and page objects and found three tests that could never fail (a guest checkout check that only verified the unchanged cart URL, a category filter check that passed without filtering, and a multiple-products check that counted rows without checking names)
+- `test-writer` fixed them; each fix was verified by deliberately breaking the behaviour and confirming that the test fails
+- `test-planner` produced the approved CartCheckout test plan in [`docs/test-plan.md`](docs/test-plan.md): 22 test cases with test design techniques and coverage status
+
+`docs/bug-reports.md` is created by `bug-reporter` when the first site defect is confirmed.
 
 ## Author
 

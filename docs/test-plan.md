@@ -35,7 +35,7 @@ Statuses: Covered / Partial / Missing. User state: G = guest, U = logged-in user
 | [TC-CART-001](#tc-cart-001) | Guest adds one product, the cart has one row with quantity 1 | State transition | Positive | High | Yes | Covered |
 | [TC-CART-002](#tc-cart-002) | Guest adds two different products, both are in the cart | State transition | Positive | High | Yes | Covered |
 | [TC-CART-003](#tc-cart-003) | Guest removes the only product, the cart is empty | State transition | Positive | High | Yes | Covered |
-| [TC-CART-004](#tc-cart-004) | Guest clicks Proceed To Checkout and sees the login prompt | State transition | Negative | High | Yes | Covered |
+| [TC-CART-004](#tc-cart-004) | Guest clicks Proceed To Checkout and sees the login prompt | State transition | Positive | High | Yes | Covered |
 | [TC-CART-005](#tc-cart-005) | Empty cart shows "Cart is empty!" with a link to products | State transition | Positive | Medium | Yes | Missing |
 | [TC-CART-006](#tc-cart-006) | Adding the same product twice increases the quantity to 2 | Error guessing | Positive | High | Yes | Missing |
 | [TC-CART-007](#tc-cart-007) | Product page: quantity 3 (typical valid value) is shown in the cart | Equivalence partitioning | Positive | Medium | Yes | Missing |
@@ -326,7 +326,7 @@ Statuses: Covered / Partial / Missing. User state: G = guest, U = logged-in user
 - TC-CART-019..022 also need an existing account in test data.
 - Independence: every case adds its own products and starts from a clean state; cases do not depend on each other.
 - Existing quantity checks use an exact text match (commit "verify login prompt for guest checkout and exact cart quantity").
-- The existing CartArea page object has no methods for names, prices, totals, the empty cart, the product page quantity field, checkout or payment; new methods and selectors will be needed after approval.
+- The existing CartArea page object checks row count, quantity and product names; methods for prices, totals, the empty cart, the product page quantity field, checkout and payment will be needed.
 - TC-CART-014 tests one value from the class "quantity greater than 1"; the class "quantity equal to 1" is already checked by TC-CART-001.
 
 **Coverage summary**

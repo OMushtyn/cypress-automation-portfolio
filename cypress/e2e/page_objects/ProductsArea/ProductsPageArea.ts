@@ -33,7 +33,7 @@ export class ProductsArea {
      * items whose titles don't literally contain the search term).
      */
     verifySearchResultsHeadingVisible(): this {
-        cy.get(mapping_products.elements.product_title)
+        cy.get(mapping_products.elements.section_title)
             .should('be.visible')
             .invoke('text')
             .should('match', /searched products/i);
@@ -67,6 +67,10 @@ export class ProductsArea {
      * Uses .first() because a product card can contain more than one element
      * matching the "Add to cart" selector (e.g. a hover overlay button plus
      * a second one elsewhere in the same card markup).
+     * Uses { force: true } because the "Add to cart" button is only visible on
+     * hover, and Cypress does not hold a real hover state.
+     * Uses .eq(index) because the product is picked by its position from the
+     * test data.
      * @param index - Index of the product in the list (0-based).
      */
     addProductToCartByIndex(index: number): this {
@@ -141,7 +145,7 @@ export class ProductsArea {
     verifyCategoryPageShown(expectedPath: string, expectedHeading: string): this {
         cy.location('pathname')
             .should('eq', expectedPath);
-        cy.get(mapping_products.elements.product_title)
+        cy.get(mapping_products.elements.section_title)
             .should('have.text', expectedHeading);
 
         return this;

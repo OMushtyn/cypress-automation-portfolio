@@ -74,11 +74,14 @@ export class RegistrationArea {
     }
 
     /**
-     * Verifies that the signup name field is marked invalid (required field left empty).
+     * Verifies that the signup name field fails browser-native validation
+     * (validity.valid is false) because the required field was left empty.
      */
     verifySignupNameInvalid(): this {
-        cy.get(`${mapping_registration.inputs.signup_name_input}:invalid`)
-            .should('exist');
+        cy.get(mapping_registration.inputs.signup_name_input)
+            .invoke('prop', 'validity')
+            .its('valid')
+            .should('eq', false);
 
         return this;
     }
@@ -99,8 +102,7 @@ export class RegistrationArea {
     }
 
     /**
-     * Verifies that the user has moved to the account information page
-     * ("ENTER ACCOUNT INFORMATION") after a successful signup submission.
+     * Verifies that the URL contains "/signup" after the signup form is submitted.
      */
     verifyOnSignupPage(): this {
         cy.url()
