@@ -11,6 +11,9 @@ export const mapping_cart = {
         cart_total_price: '#cart_info_table .cart_total_price',
         checkout_modal: '#checkoutModal',
         checkout_modal_login_link: '#checkoutModal a[href="/login"]',
+        cart_table: '#cart_info_table',
+        empty_cart_message: '#empty_cart b',
+        empty_cart_products_link: '#empty_cart a',
     },
 } as const;
 

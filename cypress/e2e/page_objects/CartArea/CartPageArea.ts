@@ -5,6 +5,15 @@ import { mapping_cart } from './mapping_cart';
  */
 export class CartArea {
     /**
+     * Opens the cart page (/view_cart).
+     */
+    visit(): this {
+        cy.visit('/view_cart');
+
+        return this;
+    }
+
+    /**
      * Verifies the number of rows (products) in the cart table.
      * @param expectedRows - Expected number of rows.
      */
@@ -105,6 +114,51 @@ export class CartArea {
     }
 
     /**
+     * Starts listening for the request that removes a product from the cart
+     * (GET /delete_cart/<id>, sent by the site's cart.js on a delete click).
+     * Must be called before the delete click, otherwise the request is missed.
+     * The URL pattern is kept here (not in the mapping file) because it is not
+     * a selector, same as the paths used by visit().
+     * @param alias - Alias name without "@".
+     */
+    interceptDeleteRequest(alias: string): this {
+        cy.intercept('GET', '/delete_cart/*').as(alias);
+
+        return this;
+    }
+
+    /**
+     * Verifies that the delete request succeeded: waits for the request
+     * intercepted by interceptDeleteRequest, then checks that its path is
+     * /delete_cart/<expected product id> (the expected product was removed) and
+     * that the response status is 200. The site removes the row only after this
+     * response, so later cart checks run against the updated table.
+     * @param requestAlias - Alias of the intercepted request, without "@".
+     * @param productIdAlias - Alias of the expected product id, without "@",
+     * saved by rememberProductIdByIndex.
+     */
+    verifyDeleteRequestSucceeded(requestAlias: string, productIdAlias: string): this {
+        cy.get<string>(`@${productIdAlias}`).then((productId) => {
+            cy.wait(`@${requestAlias}`).then(({ request, response }) => {
+                expect(new URL(request.url).pathname, 'deleted product').to.eq(`/delete_cart/${productId}`);
+                expect(response?.statusCode, 'delete response status').to.eq(200);
+            });
+        });
+
+        return this;
+    }
+
+    /**
+     * Reloads the current page (the cart lives in the server session, so it
+     * should survive a reload).
+     */
+    reloadPage(): this {
+        cy.reload();
+
+        return this;
+    }
+
+    /**
      * Clicks the "Proceed To Checkout" button.
      */
     proceedToCheckout(): this {
@@ -125,6 +179,30 @@ export class CartArea {
         cy.get(mapping_cart.elements.checkout_modal_login_link)
             .should('be.visible')
             .and('have.attr', 'href', '/login');
+
+        return this;
+    }
+
+    /**
+     * Verifies the empty cart state of a page loaded with an empty cart:
+     * the message and the link to the products page are visible, and the
+     * product table is not rendered at all. The server omits the table for an
+     * empty cart, while deleting the last product on the page only hides it,
+     * so this check is meant for a cart that was already empty on page load.
+     * @param expectedMessage - Expected bold message text (e.g. "Cart is empty!").
+     * @param expectedLinkText - Expected link text (e.g. "here").
+     * @param expectedLinkPath - Expected link href (e.g. "/products").
+     */
+    verifyEmptyCartShown(expectedMessage: string, expectedLinkText: string, expectedLinkPath: string): this {
+        cy.get(mapping_cart.elements.empty_cart_message)
+            .should('be.visible')
+            .and('have.text', expectedMessage);
+        cy.get(mapping_cart.elements.empty_cart_products_link)
+            .should('be.visible')
+            .and('have.text', expectedLinkText)
+            .and('have.attr', 'href', expectedLinkPath);
+        cy.get(mapping_cart.elements.cart_table)
+            .should('not.exist');
 
         return this;
     }

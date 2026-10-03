@@ -92,4 +92,48 @@ describe('Cart and Checkout Flow', () => {
             .verifyItemQuantity(testData.expectedQuantityAfterAddingTwice)
             .verifyRowTotalEqualsPriceTimesQuantity(testData.expectedQuantityAfterAddingTwice);
     });
+
+    it('should show the empty cart message with a link to products when the cart is empty', () => {
+        const testData = data.dataProvider.emptyCart;
+
+        cartPage
+            .visit()
+            .verifyEmptyCartShown(testData.message, testData.linkText, testData.linkPath);
+    });
+
+    it('should keep the other product when one of two products is removed', () => {
+        const testData = data.dataProvider;
+
+        productsPage
+            .rememberProductNameByIndex(testData.firstProductIndex, testData.firstProductNameAlias)
+            .rememberProductIdByIndex(testData.firstProductIndex, testData.firstProductIdAlias)
+            .addProductToCartByIndex(testData.firstProductIndex)
+            .continueShoppingFromModal()
+            .rememberProductNameByIndex(testData.secondProductIndex, testData.secondProductNameAlias)
+            .addProductToCartByIndex(testData.secondProductIndex)
+            .goToCartFromModal();
+
+        cartPage
+            .verifyCartRowCount(testData.expectedTwoItemsCount)
+            .interceptDeleteRequest(testData.deleteCartRequestAlias)
+            .deleteFirstItem()
+            .verifyDeleteRequestSucceeded(testData.deleteCartRequestAlias, testData.firstProductIdAlias)
+            .verifyCartRowCount(testData.expectedSingleItemCount)
+            .verifyCartProductNamesMatchAliases([testData.secondProductNameAlias]);
+    });
+
+    it('should keep the cart contents after a page reload', () => {
+        const testData = data.dataProvider;
+
+        productsPage
+            .rememberProductNameByIndex(testData.firstProductIndex, testData.firstProductNameAlias)
+            .addProductToCartByIndex(testData.firstProductIndex)
+            .goToCartFromModal();
+
+        cartPage
+            .reloadPage()
+            .verifyCartRowCount(testData.expectedSingleItemCount)
+            .verifyCartProductNamesMatchAliases([testData.firstProductNameAlias])
+            .verifyItemQuantity(testData.expectedSingleItemCount);
+    });
 });
