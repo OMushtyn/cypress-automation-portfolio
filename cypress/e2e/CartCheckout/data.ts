@@ -16,5 +16,7 @@ export const data = {
         },
         firstProductIdAlias: 'firstProductId',
         deleteCartRequestAlias: 'deleteCartRequest',
+        deleteCartPath: '/delete_cart/',
+        loginPath: '/login',
     },
 };

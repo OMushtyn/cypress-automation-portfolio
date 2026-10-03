@@ -56,12 +56,13 @@ describe('Cart and Checkout Flow', () => {
 
         productsPage
             .searchProduct(testData.searchTermForCheckoutFlow)
+            .verifySearchResultsHeadingVisible()
             .addProductToCartByIndex(testData.firstProductIndex)
             .goToCartFromModal();
 
         cartPage
             .proceedToCheckout()
-            .verifyLoginPromptShownForGuestCheckout();
+            .verifyLoginPromptShownForGuestCheckout(testData.loginPath);
     });
 
     it('should increase the quantity to 2 when the same product is added twice', () => {
@@ -115,9 +116,13 @@ describe('Cart and Checkout Flow', () => {
 
         cartPage
             .verifyCartRowCount(testData.expectedTwoItemsCount)
-            .interceptDeleteRequest(testData.deleteCartRequestAlias)
-            .deleteFirstItem()
-            .verifyDeleteRequestSucceeded(testData.deleteCartRequestAlias, testData.firstProductIdAlias)
+            .interceptDeleteRequest(testData.deleteCartPath, testData.deleteCartRequestAlias)
+            .deleteFirstItem();
+
+        cartPage.waitForRequest(testData.deleteCartRequestAlias);
+
+        cartPage
+            .verifyDeleteRequestForProduct(testData.deleteCartRequestAlias, testData.deleteCartPath, testData.firstProductIdAlias)
             .verifyCartRowCount(testData.expectedSingleItemCount)
             .verifyCartProductNamesMatchAliases([testData.secondProductNameAlias]);
     });
