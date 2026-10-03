@@ -63,4 +63,33 @@ describe('Cart and Checkout Flow', () => {
             .proceedToCheckout()
             .verifyLoginPromptShownForGuestCheckout();
     });
+
+    it('should increase the quantity to 2 when the same product is added twice', () => {
+        const testData = data.dataProvider;
+
+        productsPage
+            .addProductToCartByIndex(testData.firstProductIndex)
+            .continueShoppingFromModal()
+            .addProductToCartByIndex(testData.firstProductIndex)
+            .goToCartFromModal();
+
+        cartPage
+            .verifyCartRowCount(testData.expectedSingleItemCount)
+            .verifyItemQuantity(testData.expectedQuantityAfterAddingTwice);
+    });
+
+    it('should show a row total equal to the price multiplied by the quantity', () => {
+        const testData = data.dataProvider;
+
+        productsPage
+            .addProductToCartByIndex(testData.firstProductIndex)
+            .continueShoppingFromModal()
+            .addProductToCartByIndex(testData.firstProductIndex)
+            .goToCartFromModal();
+
+        cartPage
+            .verifyCartRowCount(testData.expectedSingleItemCount)
+            .verifyItemQuantity(testData.expectedQuantityAfterAddingTwice)
+            .verifyRowTotalEqualsPriceTimesQuantity(testData.expectedQuantityAfterAddingTwice);
+    });
 });

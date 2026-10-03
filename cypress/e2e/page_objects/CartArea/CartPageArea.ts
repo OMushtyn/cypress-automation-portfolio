@@ -54,6 +54,44 @@ export class CartArea {
     }
 
     /**
+     * Verifies that the row total equals the row price multiplied by the quantity.
+     * Works on a cart with exactly one row: both cells are checked to be single,
+     * so prices of several rows are never concatenated into one string.
+     * Amounts are parsed with a strict "Rs. <integer>" pattern (the site shows
+     * whole rupees without thousands separators), so a format change fails the
+     * test instead of silently producing NaN.
+     * Price and total are read in one .should() callback, so Cypress retries
+     * the whole check together and never compares a total with a stale price.
+     * The total cell is looked up from the price element's <body> because the
+     * mapping selectors are absolute (prefixed with the table id), so they
+     * cannot be used with .find() inside a row.
+     * @param expectedQuantity - Quantity the price is multiplied by.
+     */
+    verifyRowTotalEqualsPriceTimesQuantity(expectedQuantity: number): this {
+        const parseRupees = (text: string): number => {
+            const match = text.trim().match(/^Rs\.\s*(-?\d+)$/);
+
+            expect(match, `amount format of "${text.trim()}"`).to.not.be.null;
+
+            return Number(match![1]);
+        };
+
+        cy.get(mapping_cart.elements.cart_price)
+            .should(($price) => {
+                const $total = $price.closest('body').find(mapping_cart.elements.cart_total_price);
+
+                expect($price, 'price cells').to.have.length(1);
+                expect($total, 'total cells').to.have.length(1);
+
+                const price = parseRupees($price.text());
+
+                expect(parseRupees($total.text()), 'row total').to.eq(price * expectedQuantity);
+            });
+
+        return this;
+    }
+
+    /**
      * Removes the product in the first cart row.
      * Uses .first() because every cart row has its own delete icon, so only
      * the first one is clicked.

@@ -8,5 +8,6 @@ export const data = {
         expectedTwoItemsCount: 2,
         expectedEmptyCartCount: 0,
         searchTermForCheckoutFlow: 'Top',
+        expectedQuantityAfterAddingTwice: 2,
     },
 };
