@@ -41,6 +41,22 @@ The code is stable and green in CI — changes must keep the existing style and 
 - Never use `cy.wait(<number>)` — wait for elements or use `cy.intercept` + alias
 - 4-space indentation
 
+### Method style (follow the reference files)
+- A page object method is a short chain of Cypress commands: one action or one check
+- TSDoc: one sentence, plus `@param` lines; explain non-obvious decisions in one extra sentence at most
+- No helper functions, parsing or calculations inside page object methods — put reusable helpers in `cypress/support/utils.ts` and import them
+- Prefer `cy.get(...)` chains; avoid direct jQuery manipulation (`.closest()`, `.find()` on jQuery objects) unless a comment explains why it is needed
+
+### Assertions
+- Prefer strict checks: `.invoke('text').invoke('trim').should('equal', expected)`
+- For strings with irregular whitespace: `.then((t) => expect(t.trim().replace(/\s+/g, ' ')).to.equal(expected))`
+- Expected values always come from `data.ts`
+- No hardcoded dates or times — generate them dynamically
+
+### Network waits
+- If an action triggers a request the test must wait for, break the chain: action → `cy.wait('@alias')` right after it → then `verify...`
+- Register `cy.intercept` before the action that triggers the request
+
 ## Reference files (copy their style)
 - Page object: `cypress/e2e/page_objects/ProductsArea/ProductsPageArea.ts`
 - Selectors: `cypress/e2e/page_objects/ProductsArea/mapping_products.ts`
