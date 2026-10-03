@@ -36,7 +36,7 @@ Statuses: Covered / Partial / Missing. User state: G = guest, U = logged-in user
 | [TC-CART-002](#tc-cart-002) | Guest adds two different products, both are in the cart | State transition | Positive | High | Yes | Covered |
 | [TC-CART-003](#tc-cart-003) | Guest removes the only product, the cart is empty | State transition | Positive | High | Yes | Covered |
 | [TC-CART-004](#tc-cart-004) | Guest clicks Proceed To Checkout and sees the login prompt | State transition | Positive | High | Yes | Covered |
-| [TC-CART-005](#tc-cart-005) | Empty cart shows "Cart is empty!" with a link to products | State transition | Positive | Medium | Yes | Missing |
+| [TC-CART-005](#tc-cart-005) | Empty cart shows "Cart is empty!" with a link to products | State transition | Positive | Medium | Yes | Covered |
 | [TC-CART-006](#tc-cart-006) | Adding the same product twice increases the quantity to 2 | Error guessing | Positive | High | Yes | Covered |
 | [TC-CART-007](#tc-cart-007) | Product page: quantity 3 (typical valid value) is shown in the cart | Equivalence partitioning | Positive | Medium | Yes | Missing |
 | [TC-CART-008](#tc-cart-008) | Product page: quantity 1 (minimum valid value) is shown in the cart | Boundary value analysis | Boundary | Medium | Yes | Missing |
@@ -46,8 +46,8 @@ Statuses: Covered / Partial / Missing. User state: G = guest, U = logged-in user
 | [TC-CART-012](#tc-cart-012) | Product page: non-numeric quantity is handled | Equivalence partitioning | Negative | Medium | No | Missing |
 | [TC-CART-013](#tc-cart-013) | Product page: empty quantity is handled | Equivalence partitioning | Negative | Medium | No | Missing |
 | [TC-CART-014](#tc-cart-014) | Row total equals price multiplied by quantity | Equivalence partitioning | Positive | High | Yes | Covered |
-| [TC-CART-015](#tc-cart-015) | Removing one of two products keeps the other | State transition | Positive | Medium | Yes | Missing |
-| [TC-CART-016](#tc-cart-016) | Cart is preserved after a page reload | Error guessing | Positive | Medium | Yes | Missing |
+| [TC-CART-015](#tc-cart-015) | Removing one of two products keeps the other | State transition | Positive | Medium | Yes | Covered |
+| [TC-CART-016](#tc-cart-016) | Cart is preserved after a page reload | Error guessing | Positive | Medium | Yes | Covered |
 | [TC-CART-017](#tc-cart-017) | The Register / Login link in the checkout modal leads to /login | State transition | Positive | Medium | Yes | Partial |
 | [TC-CART-018](#tc-cart-018) | Continue Shopping closes the modal and stays on the products page | State transition | Positive | Low | Yes | Partial |
 | [TC-CART-019](#tc-cart-019) | Logged-in user sees address and order review on checkout | State transition | Positive | High | No | Missing |
@@ -114,7 +114,7 @@ Statuses: Covered / Partial / Missing. User state: G = guest, U = logged-in user
   1. Open /view_cart
 - **Test data:** —
 - **Expected result:** the text "Cart is empty!" and a "here" link to /products are visible; there is no product table
-- **Covered by:** —
+- **Covered by:** CartCheckout/test_cart_checkout.spec.ts — "should show the empty cart message with a link to products when the cart is empty"
 
 #### TC-CART-006
 
@@ -234,7 +234,7 @@ Statuses: Covered / Partial / Missing. User state: G = guest, U = logged-in user
   2. Delete the first row
 - **Test data:** product indexes 0 and 1
 - **Expected result:** 1 row remains and it contains the name of the second product
-- **Covered by:** —
+- **Covered by:** CartCheckout/test_cart_checkout.spec.ts — "should keep the other product when one of two products is removed"
 
 #### TC-CART-016
 
@@ -246,7 +246,7 @@ Statuses: Covered / Partial / Missing. User state: G = guest, U = logged-in user
   2. Reload the page
 - **Test data:** product index 0
 - **Expected result:** the cart still has 1 row with the same product and quantity 1
-- **Covered by:** —
+- **Covered by:** CartCheckout/test_cart_checkout.spec.ts — "should keep the cart contents after a page reload"
 
 #### TC-CART-017
 
@@ -326,16 +326,16 @@ Statuses: Covered / Partial / Missing. User state: G = guest, U = logged-in user
 - TC-CART-019..022 also need an existing account in test data.
 - Independence: every case adds its own products and starts from a clean state; cases do not depend on each other.
 - Existing quantity checks use an exact text match (commit "verify login prompt for guest checkout and exact cart quantity").
-- The existing CartArea page object checks row count, quantity, product names and the row total of a single-row cart (`verifyRowTotalEqualsPriceTimesQuantity`); methods for totals of several rows, the empty cart, the product page quantity field, checkout and payment will be needed.
+- The existing CartArea page object checks row count, quantity, product names, the row total of a single-row cart (`verifyRowTotalEqualsPriceTimesQuantity`) and the empty cart state (`verifyEmptyCartShown`); methods for totals of several rows, the product page quantity field, checkout and payment will be needed.
 - TC-CART-014 tests one value from the class "quantity greater than 1"; the class "quantity equal to 1" is already checked by TC-CART-001.
 
 **Coverage summary**
 
 | Status | Count | Cases |
 |---|---|---|
-| Covered | 6 | 001, 002, 003, 004, 006, 014 |
+| Covered | 9 | 001–006, 014, 015, 016 |
 | Partial | 2 | 017, 018 |
-| Missing | 14 | 005, 007–013, 015, 016, 019–022 |
+| Missing | 11 | 007–013, 019–022 |
 | Total | 22 | |
 
 Automation split: Automate = Yes 13 cases (001–008, 014–018), Automate = No 9 cases (009–013, 019–022).
@@ -345,5 +345,5 @@ Automation split: Automate = Yes 13 cases (001–008, 014–018), Automate = No 
 | Priority | Cases | What is missing |
 |---|---|---|
 | High | 019, 020, 021 | the whole checkout of a logged-in user (address, payment, confirmation, payment validation; these need an exploratory check first) |
-| Medium | 005, 007, 008, 009, 010, 012, 013, 015, 016, 017, 022 | the empty cart, valid quantities from the product page, invalid quantity handling (exploratory), partial removal, cart persistence, the /login navigation, the cart after login |
+| Medium | 007, 008, 009, 010, 012, 013, 017, 022 | valid quantities from the product page, invalid quantity handling (exploratory), the /login navigation, the cart after login |
 | Low | 011, 018 | huge quantity handling (exploratory), modal closing check |
