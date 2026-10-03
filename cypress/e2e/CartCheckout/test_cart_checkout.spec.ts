@@ -56,11 +56,89 @@ describe('Cart and Checkout Flow', () => {
 
         productsPage
             .searchProduct(testData.searchTermForCheckoutFlow)
+            .verifySearchResultsHeadingVisible()
             .addProductToCartByIndex(testData.firstProductIndex)
             .goToCartFromModal();
 
         cartPage
             .proceedToCheckout()
-            .verifyLoginPromptShownForGuestCheckout();
+            .verifyLoginPromptShownForGuestCheckout(testData.loginPath);
+    });
+
+    it('should increase the quantity to 2 when the same product is added twice', () => {
+        const testData = data.dataProvider;
+
+        productsPage
+            .addProductToCartByIndex(testData.firstProductIndex)
+            .continueShoppingFromModal()
+            .addProductToCartByIndex(testData.firstProductIndex)
+            .goToCartFromModal();
+
+        cartPage
+            .verifyCartRowCount(testData.expectedSingleItemCount)
+            .verifyItemQuantity(testData.expectedQuantityAfterAddingTwice);
+    });
+
+    it('should show a row total equal to the price multiplied by the quantity', () => {
+        const testData = data.dataProvider;
+
+        productsPage
+            .addProductToCartByIndex(testData.firstProductIndex)
+            .continueShoppingFromModal()
+            .addProductToCartByIndex(testData.firstProductIndex)
+            .goToCartFromModal();
+
+        cartPage
+            .verifyCartRowCount(testData.expectedSingleItemCount)
+            .verifyItemQuantity(testData.expectedQuantityAfterAddingTwice)
+            .verifyRowTotalEqualsPriceTimesQuantity(testData.expectedQuantityAfterAddingTwice);
+    });
+
+    it('should show the empty cart message with a link to products when the cart is empty', () => {
+        const testData = data.dataProvider.emptyCart;
+
+        cartPage
+            .visit()
+            .verifyEmptyCartShown(testData.message, testData.linkText, testData.linkPath);
+    });
+
+    it('should keep the other product when one of two products is removed', () => {
+        const testData = data.dataProvider;
+
+        productsPage
+            .rememberProductNameByIndex(testData.firstProductIndex, testData.firstProductNameAlias)
+            .rememberProductIdByIndex(testData.firstProductIndex, testData.firstProductIdAlias)
+            .addProductToCartByIndex(testData.firstProductIndex)
+            .continueShoppingFromModal()
+            .rememberProductNameByIndex(testData.secondProductIndex, testData.secondProductNameAlias)
+            .addProductToCartByIndex(testData.secondProductIndex)
+            .goToCartFromModal();
+
+        cartPage
+            .verifyCartRowCount(testData.expectedTwoItemsCount)
+            .interceptDeleteRequest(testData.deleteCartPath, testData.deleteCartRequestAlias)
+            .deleteFirstItem();
+
+        cartPage.waitForRequest(testData.deleteCartRequestAlias);
+
+        cartPage
+            .verifyDeleteRequestForProduct(testData.deleteCartRequestAlias, testData.deleteCartPath, testData.firstProductIdAlias)
+            .verifyCartRowCount(testData.expectedSingleItemCount)
+            .verifyCartProductNamesMatchAliases([testData.secondProductNameAlias]);
+    });
+
+    it('should keep the cart contents after a page reload', () => {
+        const testData = data.dataProvider;
+
+        productsPage
+            .rememberProductNameByIndex(testData.firstProductIndex, testData.firstProductNameAlias)
+            .addProductToCartByIndex(testData.firstProductIndex)
+            .goToCartFromModal();
+
+        cartPage
+            .reloadPage()
+            .verifyCartRowCount(testData.expectedSingleItemCount)
+            .verifyCartProductNamesMatchAliases([testData.firstProductNameAlias])
+            .verifyItemQuantity(testData.expectedSingleItemCount);
     });
 });

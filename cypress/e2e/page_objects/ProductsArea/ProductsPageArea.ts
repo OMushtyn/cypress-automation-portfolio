@@ -124,6 +124,28 @@ export class ProductsArea {
     }
 
     /**
+     * Saves the id of the product at the given index (the data-product-id of its
+     * "Add to cart" button) as a static alias, so a later request can be matched
+     * to this exact product.
+     * Uses .eq(index) because the product is chosen by its position in the list
+     * (same as addProductToCartByIndex). Uses .first() because every product card
+     * has two "Add to cart" buttons (card and hover overlay) with the same id.
+     * @param index - Index of the product in the list (0-based).
+     * @param alias - Alias name without "@".
+     */
+    rememberProductIdByIndex(index: number, alias: string): this {
+        cy.get(mapping_products.elements.product_items)
+            .eq(index)
+            .find(mapping_products.buttons.add_to_cart_button)
+            .first()
+            .invoke('attr', 'data-product-id')
+            .should('match', /^\d+$/)
+            .as(alias, { type: 'static' });
+
+        return this;
+    }
+
+    /**
      * Expands the "Women" sidebar panel and opens its "Dress" subcategory.
      * The panel title is only an accordion toggle, so the subcategory link
      * inside the expanded panel must be clicked to actually filter.
